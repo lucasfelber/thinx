@@ -9,6 +9,8 @@ use crate::{
     errors::{AppError, Json},
 };
 
+mod thought;
+
 #[derive(OpenApi)]
 #[openapi()]
 struct ApiDoc;
@@ -16,6 +18,7 @@ struct ApiDoc;
 pub fn router() -> Router<AppConfig> {
     let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
         .routes(routes!(root))
+        .nest("/thought", thought::router())
         .fallback(|| async { AppError::NotFound })
         .split_for_parts();
 
