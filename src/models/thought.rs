@@ -36,4 +36,14 @@ impl Thought {
 
         Ok(thought)
     }
+
+    pub async fn get(
+        transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    ) -> Result<Vec<Self>, AppError> {
+        let thoughts = sqlx::query_file_as!(Self, "queries/thought/get.sql")
+            .fetch_all(&mut **transaction)
+            .await?;
+
+        Ok(thoughts)
+    }
 }
