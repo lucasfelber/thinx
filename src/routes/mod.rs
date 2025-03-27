@@ -4,7 +4,10 @@ use utoipa::OpenApi;
 use utoipa_axum::{router::OpenApiRouter, routes};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::{AppConfig,errors::{AppError, Json},};
+use crate::{
+    AppConfig,
+    errors::{AppError, Json},
+};
 
 #[derive(OpenApi)]
 #[openapi()]
