@@ -46,4 +46,15 @@ impl Thought {
 
         Ok(thoughts)
     }
+
+    pub async fn get_id(
+        id: & Uuid,
+        transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    ) -> Result<Self, AppError> {
+        let thought = sqlx::query_file_as!(Self, "queries/thought/get_id.sql", id)
+            .fetch_one(&mut **transaction)
+            .await?;
+
+        Ok(thought)
+    }
 }
