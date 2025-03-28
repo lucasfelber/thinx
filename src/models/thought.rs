@@ -69,4 +69,15 @@ impl Thought {
 
         Ok(thought)
     }
+
+    pub async fn delete(
+        id: &Uuid,
+        transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    ) -> Result<Self, AppError> {
+        let thought = sqlx::query_file_as!(Self, "queries/thought/delete.sql", id,)
+            .fetch_one(&mut **transaction)
+            .await?;
+
+        Ok(thought)
+    }
 }

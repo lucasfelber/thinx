@@ -13,7 +13,7 @@ use crate::{
 pub fn router() -> OpenApiRouter<AppConfig> {
     OpenApiRouter::new()
         .routes(routes!(create_thought, read_thoughts))
-        .routes(routes!(read_thought, update_thought))
+        .routes(routes!(read_thought, update_thought, delete_thought))
 }
 
 #[utoipa::path(post, path = "")]
@@ -63,6 +63,18 @@ async fn update_thought(
 ) -> AppResult<Value> {
     let mut transaction = app_config.postgres_pool.begin().await?;
     let thought = Thought::update(&id, &req.thought, &mut transaction).await?;
+    transaction.commit().await?;
+
+    Ok(Json(json!(thought)))
+}
+
+#[utoipa::path(delete, path = "/{id}")]
+async fn delete_thought(
+    State(app_config): State<AppConfig>,
+    Path(id): Path<Uuid>,
+) -> AppResult<Value> {
+    let mut transaction = app_config.postgres_pool.begin().await?;
+    let thought = Thought::delete(&id, &mut transaction).await?;
     transaction.commit().await?;
 
     Ok(Json(json!(thought)))
