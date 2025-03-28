@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO thought (\n    content\n)\nVALUES (\n    $1\n)\nRETURNING\n    id,\n    content,\n    created_at,\n    updated_at",
+  "query": "INSERT INTO thought (\n    content\n)\nVALUES (\n    $1\n)\nRETURNING *",
   "describe": {
     "columns": [
       {
@@ -36,5 +36,5 @@
       false
     ]
   },
-  "hash": "7e39e93496418375183827fee9174d483327858a4381918b8d74c39770b76e1c"
+  "hash": "9cfa011fd0b6c5ca57c93175ee3206d0a9847c74789d08cd178c3b2fb256d4f6"
 }
