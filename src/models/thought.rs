@@ -63,9 +63,10 @@ impl Thought {
         command: &ThoughtCommand,
         transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     ) -> Result<Self, AppError> {
-        let thought = sqlx::query_file_as!(Self, "queries/thought/update.sql", id, command.content,)
-            .fetch_one(&mut **transaction)
-            .await?;
+        let thought =
+            sqlx::query_file_as!(Self, "queries/thought/update.sql", id, command.content,)
+                .fetch_one(&mut **transaction)
+                .await?;
 
         Ok(thought)
     }

@@ -33,9 +33,7 @@ async fn create_thought(
 }
 
 #[utoipa::path(get, path = "")]
-async fn read_thoughts(
-    State(app_config): State<AppConfig>,
-) -> AppResult<Value> {
+async fn read_thoughts(State(app_config): State<AppConfig>) -> AppResult<Value> {
     let mut transaction = app_config.postgres_pool.begin().await?;
     let thoughts = Thought::get(&mut transaction).await?;
     transaction.commit().await?;
