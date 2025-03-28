@@ -48,10 +48,22 @@ impl Thought {
     }
 
     pub async fn get_id(
-        id: & Uuid,
+        id: &Uuid,
         transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     ) -> Result<Self, AppError> {
         let thought = sqlx::query_file_as!(Self, "queries/thought/get_id.sql", id)
+            .fetch_one(&mut **transaction)
+            .await?;
+
+        Ok(thought)
+    }
+
+    pub async fn update(
+        id: &Uuid,
+        command: &ThoughtCommand,
+        transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    ) -> Result<Self, AppError> {
+        let thought = sqlx::query_file_as!(Self, "queries/thought/update.sql", id, command.content,)
             .fetch_one(&mut **transaction)
             .await?;
 
